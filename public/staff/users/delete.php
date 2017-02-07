@@ -9,7 +9,12 @@ $users_result = find_user_by_id($_GET['id']);
 // No loop, only one result
 $user = db_fetch_assoc($users_result);
 
-if(is_post_request()) {
+if(is_post_request() && request_is_same_domain()) {
+
+  if(!csrf_token_is_valid()) {
+    exit("Error: invalid request");
+  }
+  
   $result = delete_user($user);
   if($result === true) {
     redirect_to('index.php');
@@ -26,6 +31,7 @@ if(is_post_request()) {
   <h1>Delete User: <?php echo h($user['first_name']) . " " . h($user['last_name']); ?></h1>
 
   <form action="delete.php?id=<?php echo h(u($user['id'])); ?>" method="post">
+    <?php echo csrf_token_tag(); ?> 
     <p>Are you sure you want to <strong>permanently delete</strong> the user:</p>
     <p>
       &bull;&nbsp;<?php echo h($user['first_name']) . " " . h($user['last_name']); ?>

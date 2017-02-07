@@ -12,7 +12,11 @@ $user = db_fetch_assoc($users_result);
 // Set default values for all variables the page needs.
 $errors = array();
 
-if(is_post_request()) {
+if(is_post_request() && request_is_same_domain()) {
+
+  if(!csrf_token_is_valid()) {
+    exit("Error: invalid request");
+  }
 
   // Confirm that values are present before accessing them.
   if(isset($_POST['first_name'])) { $user['first_name'] = $_POST['first_name']; }
@@ -40,6 +44,7 @@ if(is_post_request()) {
   <?php echo display_errors($errors); ?>
 
   <form action="edit.php?id=<?php echo h(u($user['id'])); ?>" method="post">
+    <?php echo csrf_token_tag(); ?> 
     First name:<br />
     <input type="text" name="first_name" value="<?php echo h($user['first_name']); ?>" /><br />
     Last name:<br />
