@@ -1,10 +1,14 @@
 <?php
 
   // Will perform all actions necessary to log in the user
-  // Also protects user from session fixation.
   function log_in_user($user) {
-    // TODO Store user's ID in session
-    // TODO Store last login time in session
+    
+    // Protects user from session fixation.
+    session_regenerate_id(true);
+    // Store user's ID in session
+    $_SESSION['user_id'] = $user['id'];
+    // Store last login time in session
+    $_SESSION['last_login'] = time();
     return true;
   }
 
