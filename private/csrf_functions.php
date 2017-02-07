@@ -11,7 +11,7 @@
     // Set a token and put in an HTML tag
     $token = csrf_token();
     $_SESSION['csrf_token'] = $token;
-    return '<input type="hidden" name="token" value="$token" />';
+    return '<input type="hidden" name="token" value="' .h($token) . '" />';
   }
 
   // Returns true if form token matches session token, false if not.
