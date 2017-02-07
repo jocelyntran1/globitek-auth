@@ -9,6 +9,8 @@
     $_SESSION['user_id'] = $user['id'];
     // Store last login time in session
     $_SESSION['last_login'] = time();
+    $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
+
     return true;
   }
 
@@ -39,14 +41,16 @@
   // Checks to see if the user-agent string of the current request
   // matches the user-agent string used when the user last logged in.
   function user_agent_matches_session() {
-    // TODO add code to determine if user agent matches session
+    if(!isset($_SESSION['user_agent'])) { return false; }
+    if(!isset($_SERVER['HTTP_USER_AGENT'])) { return false; }
+    return ($_SESSION['user_agent'] === $_SERVER['HTTP_USER_AGENT']);
     return true;
   }
 
   // Inspects the session to see if it should be considered valid.
   function session_is_valid() {
     if(!last_login_is_recent()) { return false; }
-    // if(!user_agent_matches_session()) { return false; }
+    if(!user_agent_matches_session()) { return false; }
     return true;
   }
 
