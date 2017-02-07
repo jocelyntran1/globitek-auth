@@ -2,7 +2,7 @@
 
   // Will perform all actions necessary to log in the user
   function log_in_user($user) {
-    
+
     // Protects user from session fixation.
     session_regenerate_id(true);
     // Store user's ID in session
@@ -14,7 +14,7 @@
 
   // A one-step function to destroy the current session
   function destroy_current_session() {
-    // TODO destroy the session file completely
+    // Destroy the session file completely
   }
 
   // Performs all actions necessary to log out a user
@@ -27,8 +27,11 @@
   // Determines if the request should be considered a "recent"
   // request by comparing it to the user's last login time.
   function last_login_is_recent() {
-    // TODO add code to determine if last login is recent
-    return true;
+    // Determine if last login is recent
+    if(!isset($_SESSION['last_login'])) {
+      return false; 
+    }
+    return ((time() - $_SESSION['last_login']) < 86400);
   }
 
   // Checks to see if the user-agent string of the current request
