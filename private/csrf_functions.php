@@ -8,8 +8,10 @@
 
   // Returns HTML for a hidden form input with a CSRF token as the value
   function csrf_token_tag() {
-    // TODO needs to set a token and put in an HTML tag
-    return '<input type="TODO" name="TODO" value="TODO" />';
+    // Set a token and put in an HTML tag
+    $token = csrf_token();
+    $_SESSION['csrf_token'] = $token;
+    return '<input type="hidden" name="token" value="$token" />';
   }
 
   // Returns true if form token matches session token, false if not.
