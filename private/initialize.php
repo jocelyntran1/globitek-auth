@@ -5,8 +5,15 @@
 ob_start();
 
 // Enable sessions
-// TODO add configurations
-session_start();
+// Prevent XSS and Session Hijacking 
+// Session IDs come from cookies only
+// Expire after one day
+// Only use HttpOnly cookies
+session_start([
+  'use_only_cookies' => 1,  
+  'cookie_lifetime' => 86400,
+  'cookie_httponly' => 1,
+]);
 
 // Turns off any browser built-in XSS protections
 // LEAVE THIS LINE IN WHILE YOU ARE LEARNING
